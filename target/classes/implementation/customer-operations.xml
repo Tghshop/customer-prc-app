@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd">
+	<sub-flow name="get-customers-data-sub-flow" doc:id="189bf1dc-d664-41f0-9658-537c8c855c86" >
+		<json-logger:logger doc:name="log-get-customers-data-sub-flow-start" doc:id="d9863650-4b2e-4c94-98ed-fdd1b63d3ce6" config-ref="json-logger-config" message='#["-----------" ++ upper("log-get-customers-data-sub-flow-start") ++ "----------"]'>
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+		<ee:transform doc:name="req-variable" doc:id="33141f17-edf9-41b6-9a63-f9cb178153af" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+vars.requestParams.payload]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="req" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"method": "GET",
+	"path": "/customers"
+}]]></ee:set-variable>
+			
+</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="sys-api-call-impl-sub-flow" doc:id="c9222ac1-7936-4398-ad7d-38f603714f21" name="sys-api-call-impl-sub-flow"/>
+		<json-logger:logger doc:name="log-get-customers-data-sub-flow-end" doc:id="55757267-b9e5-4cf6-ae00-8852d727bf11" config-ref="json-logger-config" message='#["-----------" ++ upper("log-get-customers-data-sub-flow-end") ++ "----------"]' >
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+	</sub-flow>
+	<sub-flow name="get-customer-details-sub-flow" doc:id="1dfe6cb8-f9cc-4061-bc20-6ba8e62ffda8" >
+		<json-logger:logger doc:name="log-get-customer-details-sub-flow-start" doc:id="2708650a-5781-4a18-82fc-21e654659f4c" config-ref="json-logger-config" message='#["------------" ++ upper("log-get-customer-details-sub-flow-start") ++ "-------------"]'>
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+		<ee:transform doc:name="req-variable" doc:id="ac87bcdd-1e7d-4128-a0ce-1fb25de01472" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+vars.requestParams.payload]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="req" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"method": "GET",
+	"path": "/customers/" ++ vars.requestParams.uriParams.customerId as String default ""
+}]]></ee:set-variable>
+			
+</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="sys-api-call-impl-sub-flow" doc:id="ac61efd7-dd4c-456a-ba14-ea2fcea3aa1e" name="sys-api-call-impl-sub-flow"/>
+		<json-logger:logger doc:name="log-get-customer-details-sub-flow-end" doc:id="667cd8af-15f2-4d9d-a5dc-a20e716f4b48" config-ref="json-logger-config" message='#["------------" ++ upper("log-get-customer-details-sub-flow-end") ++ "-------------"]' >
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+	</sub-flow>
+	<sub-flow name="post-customer-record-sub-flow" doc:id="dd9dfbf6-d01d-457a-9db6-d1677a8dff62" >
+		<json-logger:logger doc:name="log-post-customer-record-sub-flow-start" doc:id="a35055b7-87d8-4bf4-af4b-27af659bff4e" config-ref="json-logger-config" message='#["-----------" ++ upper("log-post-customer-record-sub-flow-start") ++ "---------------"]'>
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+		<ee:transform doc:name="request-payload-req-var" doc:id="65870a40-08b5-4458-bd17-4ebd1a0af704" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var cust = vars.requestParams.payload
+---
+[
+  {
+    "Address__c": cust.address as String default "",
+    "City__c": cust.city as String default "",
+    "Contact__c": cust.contact default "",
+    "Customer_Id__c": cust.customerId default "",
+    "Email__c": cust.email default "",
+    "IsActive__c": cust.isActive default "",
+    "Name__c": cust.name default "",
+    "Password__c": cust.password default "",
+    "Pincode__c": cust.pincode default "",
+    "Registration_Date__c": now() as String { format: "yyyy-MM-dd" },
+    "State__c": cust.state default ""
+  }
+]
+]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="req" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"method": "POST",
+	"path": "/customers"
+}]]></ee:set-variable>
+			
+</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="sys-api-call-impl-sub-flow" doc:id="b7be81f2-0430-433b-b747-38def2cd6726" name="sys-api-call-impl-sub-flow"/>
+		<ee:transform doc:name="Email-payload" doc:id="db2ac280-668f-4b68-a390-7eb3b811bf05">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	email: vars.requestParams.payload.email,
+	subject: "Welcome to TGHShop – Your Account Has Been Successfully Created",
+	body: "Hello " ++ vars.requestParams.payload.name as String ++ "\n" ++ 
+	"Thank you for signing in to TGHShop.\n" ++ 
+	"Your customer profile has been successfully created in our system."
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<flow-ref doc:name="mail-sys-call-impl-sub-flow" doc:id="1b36f348-e31d-42a0-a211-471bc14edefe" name="mail-sys-call-impl-sub-flow" />
+		<json-logger:logger doc:name="log-post-customer-record-sub-flow-end" doc:id="42cdc6fb-9df4-40ac-8079-e4b3444a7164" config-ref="json-logger-config" message='#["-----------" ++ upper("log-post-customer-record-sub-flow-end") ++ "---------------"]' >
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+	
+</sub-flow>
+	<sub-flow name="put-customer-details-sub-flow" doc:id="97baf4dc-e17a-462a-b3fa-336ec339061e" >
+		<json-logger:logger doc:name="log-put-customer-details-sub-flow-start" doc:id="de523dfa-01b5-4e2c-b4d4-40d0bc26a689" config-ref="json-logger-config" message='#["-------------" ++ upper("log-put-customer-details-sub-flow-start") ++ "-----------"]'>
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+		<flow-ref doc:name="get-customer-details-sub-flow" doc:id="b83237d4-a17f-42d0-a402-ed6082601a11" name="get-customer-details-sub-flow" target="customer"/>
+		<ee:transform doc:name="request-payload-req-var" doc:id="faa5c7ce-1fbc-4275-b6de-a73f040cd1e9" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var updDet = vars.requestParams.payload
+var sf = {
+    "Address__c": updDet.address default "",
+    "City__c": updDet.city default "",
+    "Contact__c": updDet.contact default "",
+    "Customer_Id__c": updDet.customerId default "",
+    "Email__c": updDet.email default "",
+    "Name__c": updDet.name default "",
+    "Password__c": updDet.password default "",
+    "Pincode__c": updDet.pincode default "",
+    "State__c": updDet.state default ""
+  } filterObject ((value, key, index) -> value != "") 
+---
+[(vars.customer[0] -- (sf pluck ((value, key, index) ->key)) ++ sf)]
+]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="req" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"method": "PUT",
+	"path": "/customers/" ++ vars.requestParams.uriParams.customerId as String default ""
+}
+
+]]></ee:set-variable>
+			
+</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="request-payload-req-var" doc:id="84c640b3-654f-4e7c-b374-36aeea26e10b" name="sys-api-call-impl-sub-flow"/>
+		<json-logger:logger doc:name="log-put-customer-details-sub-flow-end" doc:id="4503892a-141a-4c49-aed2-519afe1f16de" config-ref="json-logger-config" message='#["-------------" ++ upper("log-put-customer-details-sub-flow-end") ++ "-----------"]' >
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+	</sub-flow>
+	<sub-flow name="delete-customer-sub-flow" doc:id="cae4d9e5-13a0-4aa0-8978-a750a10c81bf" >
+		<json-logger:logger doc:name="log-delete-customer-sub-flow-start" doc:id="a224e7c8-6a77-433c-bbef-0a5fbf05a333" config-ref="json-logger-config" message='#["------------" ++ upper("log-delete-customer-sub-flow-start") ++ "--------------"]'>
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+		<flow-ref doc:name="get-customer-details-sub-flow" doc:id="92f97cbf-5bfb-420a-984f-d3880416d396" name="get-customer-details-sub-flow" target="customer" />
+		<ee:transform doc:name="customer-flag-update" doc:id="5f45e181-509c-43ac-bbdf-d1a54b5adcdf" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+(vars.customer[0] - "IsActive__c") ++ {
+	"IsActive__c": false
+}]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="req" ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	"method": "DELETE",
+	"path": "/customers/" ++ vars.requestParams.uriParams.customerId as String default ""
+}]]></ee:set-variable>
+			
+</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="sys-api-call-impl-sub-flow" doc:id="74570fd1-dbf5-42f6-b87b-245e508302f4" name="sys-api-call-impl-sub-flow"/>
+		<json-logger:logger doc:name="log-delete-customer-sub-flow-end" doc:id="c4ef0cfa-a9a6-41f0-a2c4-7c76c504699f" config-ref="json-logger-config" message='#["------------" ++ upper("log-delete-customer-sub-flow-end") ++ "--------------"]' >
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+	
+</sub-flow>
+	<sub-flow name="get-customer-orders-sub-flow" doc:id="86846842-6aa9-40af-a4fb-5e98a53dcae6" >
+		<json-logger:logger doc:name="log-get-customer-orders-sub-flow-start" doc:id="4eab57e8-3350-4c3f-a9ae-d5762dab7a61" config-ref="json-logger-config" message='#["------------" ++ upper("log-get-customer-orders-sub-flow-start") ++ "-------------"]' >
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+		<ee:transform doc:name="req-variable" doc:id="fa61b939-f0f1-49b9-a01c-c68551421f54" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+vars.requestParams.payload]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="req" ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	"method": "GET",
+	"path": "/orders/" ++ vars.requestParams.uriParams.customerId as String default ""
+}]]></ee:set-variable>
+			
+</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="sys-api-call-impl-sub-flow" doc:id="cb842efe-d82d-4353-9e6f-03260605b9b9" name="sys-api-call-impl-sub-flow" />
+		<json-logger:logger doc:name="log-get-customer-orders -sub-flow-end" doc:id="59ed62a2-1dec-4c98-a72b-5a3bb860ed66" config-ref="json-logger-config" message='#["------------" ++ upper("log-get-customer-orders-sub-flow-end") ++ "-------------"]' >
+			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
+		</json-logger:logger>
+	</sub-flow>	
+</mule>

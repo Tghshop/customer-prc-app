@@ -107,8 +107,8 @@ output application/json
 {
 	email: vars.requestParams.payload.email,
 	subject: "Welcome to TGHShop – Your Account Has Been Successfully Created",
-	body: "Hello " ++ vars.requestParams.payload.name as String ++ "\n" ++ 
-	"Thank you for signing in to TGHShop.\n" ++ 
+	body: "Hello " ++ vars.requestParams.payload.name as String ++ "\n\n" ++ 
+	"Thank you for signing in to TGHShop.\n\n" ++ 
 	"Your customer profile has been successfully created in our system."
 }]]></ee:set-payload>
 			</ee:message>
@@ -210,7 +210,7 @@ output application/java
 ---
 {
 	"method": "GET",
-	"path": "/orders/" ++ vars.requestParams.uriParams.customerId as String default ""
+	"path": "/customers/" ++ vars.requestParams.uriParams.customerId as String default "" ++ "/orders"
 }]]></ee:set-variable>
 			
 </ee:variables>

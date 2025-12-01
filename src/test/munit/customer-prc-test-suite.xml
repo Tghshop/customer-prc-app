@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="custome-prc-test-suite.xml" />
+	<munit:test name="customer-prc-test-get-customers-data" doc:id="20396654-50e5-4b16-99c9-08f5b0ae2408" >
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mocking-request-to-sf-sys" doc:id="e68b8261-6f3e-4b98-a675-9cb8047c6acd" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="request-to-sf-sys-api" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a0e4df5e-072d-40a5-b7d7-2b09e89fe87a" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://customers/get-query-customers-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="get:\api\v1\customers:customer-prc-api-config" doc:id="3df1061f-156b-4d17-8a45-a36d4034df21" name="get:\api\v1\customers:customer-prc-api-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="02e4da4f-85ae-4a9a-8db6-13aaa9ce2716" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://customers/get-customers-response.dwl')]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="customer-prc-test-get-customer-data" doc:id="169b0673-95fd-4ae0-9b14-ba1c43a3ca32" >
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mocking-request-to-sf-sys" doc:id="9b1e7d43-13a5-4bab-8906-553cdf74fe98" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="request-to-sf-sys-api" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a0e4df5e-072d-40a5-b7d7-2b09e89fe87a" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://customers/get-query-customer-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		
+</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="10b0b79e-ba26-4d81-88c4-d190c3ac28d9" cloneOriginalEvent="true">
+				<munit:attributes value="#[{&#10;	uriParams: {&#10;       customerId: 'CUST005'&#10;          }&#10;}]" />
+
+			</munit:set-event>
+			<flow-ref doc:name="get:\api\v1\customers\(customerId):customer-prc-api-config" doc:id="25b086d5-e5b4-4541-86ab-ee642e49dc25" name="get:\api\v1\customers\(customerId):customer-prc-api-config" />
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="67b12145-918b-4329-ba6a-0d9026a19f94" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://customers/get-customer-response.dwl')]" />
+
+		</munit:validation>
+	
+</munit:test>
+	<munit:test name="customer-prc-test-post-customer-data" doc:id="7b756592-a98e-471d-a563-4320edb93505" >
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mocking-request-to-sf-sys" doc:id="90f4ad06-42d7-4d21-bcd1-eaf2e79a184c" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="request-to-sf-sys-api" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a0e4df5e-072d-40a5-b7d7-2b09e89fe87a" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://customers/post-customer-upsert-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mocking-request-to-mail-sys" doc:id="38847271-ed28-4332-bb89-3af8a02eef17" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="request-to-mail-sys-api" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="09b2be86-b436-4425-a0d3-9e0d0f25c65d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://customers/post-mail-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="a1982a53-478c-486d-af80-6279916fc340">
+				<munit:payload value="#[output application/json --- readUrl('classpath://customers/post-customer-request.dwl')]" />
+			</munit:set-event>
+			<flow-ref doc:name="post:\api\v1\customers:application\json:customer-prc-api-config" doc:id="830fb595-820f-47c3-b1a0-a71746fb3656" name="post:\api\v1\customers:application\json:customer-prc-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="bc9c8700-f474-48f8-b042-d24e5a67e567" actual="#[payload.message]" expected="#[output application/json --- readUrl('classpath://customers/post-customer-response.dwl').message]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="customer-prc-test-put-customer-data" doc:id="962c896d-7e16-4771-a725-393ba2b08383" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mocking-request-to-sf-sys-query-flow-ref" doc:id="cbb1d838-8dfc-43ff-835b-f54cb7028d7d" processor="flow-ref" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="get-customer-details-sub-flow" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="b83237d4-a17f-42d0-a402-ed6082601a11" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="customer" value="#[output application/json --- readUrl('classpath://customers/put-query-customer-response.dwl')]" mediaType="application/json" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mocking-request-to-sf-sys-upsert" doc:id="f861f37c-968f-432f-984d-92923d8d289e" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="#[vars.req.method]" attributeName="method" />
+					<munit-tools:with-attribute whereValue="request-to-sf-sys-api" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://customers/put-customer-upsert-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		
+</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="eab5c82a-98a9-4202-bee8-c02c8462e7ac">
+				<munit:payload value="#[output application/json --- readUrl('classpath://customers/put-customer-request.dwl')]" />
+				<munit:attributes value="#[{&#10;	uriParams: {&#10;       customerId: 'CUST004'&#10;          }&#10;}]" />
+			</munit:set-event>
+			<flow-ref doc:name="put:\api\v1\customers\(customerId):application\json:customer-prc-api-config" doc:id="7c4eb450-d87a-4440-9b4f-0321d0c38725" name="put:\api\v1\customers\(customerId):application\json:customer-prc-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="733c40f8-7693-4a1f-b9d1-5ea2958ba7f5" actual="#[payload.message]" expected="#[output application/json --- readUrl('classpath://customers/put-customer-response.dwl').message]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="customer-prc-test-get-customer-orders-data" doc:id="517327a7-ab0b-42d7-b85d-0a7ac29ae2bc" >
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mocking-request-to-sf-sys" doc:id="df13123e-acb3-447d-9c07-429e5c98d6d0" processor="salesforce:query" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Query" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="9025902f-e14a-48b4-af96-21236286a768" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://customers/get-customer-orders-query-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="02675fc9-953a-4892-95db-e10889cb92b5" cloneOriginalEvent="true">
+				<munit:attributes value="#[{&#10;	uriParams: {&#10;       customerId: 'a04Qy00000CiynzIAB'&#10;          }&#10;}]" />
+				</munit:set-event>
+			<flow-ref doc:name="get:\api\v1\customers\(customerId)\orders:customer-prc-api-config" doc:id="d7d342ae-0a56-4649-957b-0fcef9cd3010" name="get:\api\v1\customers\(customerId)\orders:customer-prc-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="68e6c6e3-435b-4be7-bc65-0bbffbad343f" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://customers/get-customer-orders-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="customer-prc-test-delete-customer-data" doc:id="bc85a05c-58a8-438a-8fca-1a5eab88f091" >
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mocking-request-to-sf-sys-query-flow-ref" doc:id="6ddbf718-d3e3-464f-861a-6c79907be047" processor="flow-ref" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="get-customer-details-sub-flow" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="92f97cbf-5bfb-420a-984f-d3880416d396" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:variables >
+						<munit-tools:variable key="customer" value="#[output application/json --- readUrl('classpath://customers/delete-query-customer-response.dwl')]" mediaType="application/json" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mocking-request-to-sf-sys-upsert" doc:id="ee8f62ad-1dbb-4b2e-9467-bc20300b3a4e" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="#[vars.req.method]" attributeName="method" />
+					<munit-tools:with-attribute whereValue="request-to-sf-sys-api" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://customers/delete-upsert-customer-response.dwl')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		
+</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="2eb57e8d-5b1d-4c7e-aa2f-6d2f46045f94" cloneOriginalEvent="true" >
+				<munit:attributes value="#[{&#10;	uriParams: {&#10;       customerId: 'CUST004'&#10;          }&#10;}]" />
+			</munit:set-event>
+			<flow-ref doc:name="delete:\api\v1\customers\(customerId):application\json:customer-prc-api-config" doc:id="2bc62d04-bc9e-41a0-a4d8-deff3f924ed0" name="delete:\api\v1\customers\(customerId):application\json:customer-prc-api-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="6d6b2be4-3eae-44d6-bb61-38581f56724c" actual="#[payload]" expected="#[output application/json --- readUrl('classpath://customers/delete-customer-response.dwl')]" />
+		</munit:validation>
+	</munit:test>
+
+</mule>

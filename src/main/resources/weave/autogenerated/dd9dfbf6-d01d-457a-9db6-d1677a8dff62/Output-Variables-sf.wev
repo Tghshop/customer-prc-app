@@ -1,4 +1,0 @@
-%dw 2.0
-
-type auto_dd9dfbf6_d01d_457a_9db6_d1677a8dff62_Output_Variables_sf = {| query: String |}
-

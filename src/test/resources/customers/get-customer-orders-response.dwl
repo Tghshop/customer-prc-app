@@ -1,0 +1,53 @@
+[
+  {
+    "inventory": "a06Qy00000M1uDCIAZ",
+    "orderStatus": "out for delivery",
+    "totalPrice": "2000.0",
+    "orderDate": "2025-11-25",
+    "warehouseCity": null,
+    "deliveryPartner": "a05Qy00001CfL13IAF",
+    "customerId": "a04Qy00000CiynzIAB",
+    "quantity": "2.0",
+    "invoice": null,
+    "orderId": "ORD101",
+    "deliveryAddress": "KPHB, Hyderabad",
+    "id": "a08Qy00000TqcmsIAB",
+    "isCancelled": null,
+    "deliveryDate": "2025-11-29",
+    "transit": "a09Qy00000FEekvIAD"
+  },
+  {
+    "inventory": null,
+    "orderStatus": "shipped",
+    "totalPrice": "1000.0",
+    "orderDate": null,
+    "warehouseCity": null,
+    "deliveryPartner": "a05Qy0000186RMzIAM",
+    "customerId": "a04Qy00000CiynzIAB",
+    "quantity": "2.0",
+    "invoice": null,
+    "orderId": "ORD1002",
+    "deliveryAddress": "12 MG Road, Bangalore, Karnataka",
+    "id": "a08Qy00000TqoknIAB",
+    "isCancelled": null,
+    "deliveryDate": "2025-12-22",
+    "transit": null
+  },
+  {
+    "inventory": "a06Qy00000LOzr4IAD",
+    "orderStatus": "shipped",
+    "totalPrice": "345.0",
+    "orderDate": "2025-11-21",
+    "warehouseCity": null,
+    "deliveryPartner": "a05Qy00001CfL13IAF",
+    "customerId": "a04Qy00000CiynzIAB",
+    "quantity": "2.0",
+    "invoice": null,
+    "orderId": "ORD1005",
+    "deliveryAddress": "Road, chennai, tamilnadu",
+    "id": "a08Qy00000Uw0eHIAR",
+    "isCancelled": null,
+    "deliveryDate": "2025-12-22",
+    "transit": null
+  }
+]

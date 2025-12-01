@@ -1,0 +1,26 @@
+[
+  {
+    "customerId": "CUST1001",
+    "name": "Karthik Reddy",
+    "email": "karthik.reddy@example.com",
+    "contact": "9876543210",
+    "address": "Flat 501, Gachibowli, Hyderabad",
+    "city": "Hyderabad",
+    "state": "Telangana",
+    "pincode": "500032",
+    "registrationDate": "2025-10-25T09:00:00Z",
+    "password": "hashed_password_123"
+  },
+  {
+    "customerId": "CUST1002",
+    "name": "Anjali Verma",
+    "email": "anjali.verma@example.com",
+    "contact": "9988776655",
+    "address": "DLF Cyber City, Gurgaon",
+    "city": "Gurgaon",
+    "state": "Haryana",
+    "pincode": "122002",
+    "registrationDate": "2025-10-20T12:00:00Z",
+    "password": "hashed_password_456"
+  }
+]

@@ -14,7 +14,7 @@ http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/m
         <apikit:router config-ref="customer-prc-api-config" />
     </flow>
     <flow name="put:\api\v1\customers\(customerId):application\json:customer-prc-api-config">
-        <json-logger:logger doc:name="log-get-customer-orders-start" doc:id="f1046018-2eab-44c2-bbe8-9c064eac0d2a" config-ref="json-logger-config" message="#[&quot;----------&quot; ++ upper(&quot;log-get-customer-records-start&quot;) ++ '----------']">
+        <json-logger:logger doc:name="log-put-customer-orders-start" doc:id="f1046018-2eab-44c2-bbe8-9c064eac0d2a" config-ref="json-logger-config" message="#[&quot;----------&quot; ++ upper(&quot;log-put-customer-records-start&quot;) ++ '----------']">
 			<json-logger:content><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
 		<flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="cdc9a508-f81e-4344-b1b8-11819f341e54" name="set-request-params-sub-flow" target="requestParams" />
@@ -32,7 +32,7 @@ output application/json
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform>
-		<json-logger:logger doc:name="log-get-customer-orders-end" doc:id="c8d54e6d-eceb-489d-82f3-fccaa86e808a" config-ref="json-logger-config" message="#[&quot;----------&quot; ++ upper(&quot;log-get-customer-records-end&quot;) ++ '----------']" >
+		<json-logger:logger doc:name="log-put-customer-orders-end" doc:id="c8d54e6d-eceb-489d-82f3-fccaa86e808a" config-ref="json-logger-config" message="#[&quot;----------&quot; ++ upper(&quot;log-put-customer-records-end&quot;) ++ '----------']" >
 			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
     </flow>
@@ -123,7 +123,7 @@ payload map {
 		</json-logger:logger>
     </flow>
     <flow name="get:\api\v1\customers\(customerId):customer-prc-api-config">
-        <json-logger:logger doc:name="log-get-customer-orders-start" doc:id="0db0adf8-bae9-4455-8c53-4ca1081fa5c6" config-ref="json-logger-config" message="#[&quot;----------&quot; ++ upper(&quot;log-get-customer-records-start&quot;) ++ '----------']">
+        <json-logger:logger doc:name="log-get-customer-details-start" doc:id="0db0adf8-bae9-4455-8c53-4ca1081fa5c6" config-ref="json-logger-config" message="#[&quot;----------&quot; ++ upper(&quot;log-get-customer-records-start&quot;) ++ '----------']">
 			<json-logger:content><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
 		<flow-ref doc:name="set-request-params-sub-flow-reference" doc:id="950e3e67-ba5a-4ad3-b716-26992dfbb3fa" name="set-request-params-sub-flow" target="requestParams" />
@@ -148,7 +148,7 @@ output application/json
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform>
-		<json-logger:logger doc:name="log-get-customer-orders-end" doc:id="0924c1d0-4971-48eb-9076-18951ddf1828" config-ref="json-logger-config" message="#[&quot;----------&quot; ++ upper(&quot;log-get-customer-records-end&quot;) ++ '----------']" >
+		<json-logger:logger doc:name="log-get-customer-details-end" doc:id="0924c1d0-4971-48eb-9076-18951ddf1828" config-ref="json-logger-config" message="#[&quot;----------&quot; ++ upper(&quot;log-get-customer-records-end&quot;) ++ '----------']" >
 			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
     </flow>

@@ -9,7 +9,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		<json-logger:logger doc:name="log-mail-sys-call-impl-sub-flow-start" doc:id="398ecd5b-53c6-4353-80fb-8b6b7eef3a96" config-ref="json-logger-config" message='#["-------------" ++ upper("log-mail-sys-call-impl-sub-flow-end") ++ "------------------"]' tracePoint="BEFORE_REQUEST" >
 			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>
-		<http:request method="POST" doc:name="request-to-mail-sys-api" doc:id="09b2be86-b436-4425-a0d3-9e0d0f25c65d" config-ref="mail-http-request_configuration" path="/send-mail" outputMimeType="application/json"/>
+		<http:request method="POST" doc:name="request-to-mail-sys-api" doc:id="09b2be86-b436-4425-a0d3-9e0d0f25c65d" config-ref="mail-http-request_configuration" path="${httpRequester.mail-api.path}" outputMimeType="application/json"/>
 		<json-logger:logger doc:name="log-sys-mail-call-impl-sub-flow-end" doc:id="6cf5fa85-c0ac-46fb-ba7b-f9755fa12b13" config-ref="json-logger-config" message='#["-------------" ++ upper("mail-sys-call-impl-	sub-flow-end") ++ "------------------"]' tracePoint="END" >
 			<json-logger:content ><![CDATA[#[payload]]]></json-logger:content>
 		</json-logger:logger>

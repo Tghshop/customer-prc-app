@@ -1,0 +1,71 @@
+#%RAML 1.0
+title: customer-prc-api
+version: v1
+documentation:
+  - title: Customer Management Process API
+    content: The Customer Management Process API handles customer registration, profile updates, and retrieval. It integrates with Salesforce.
+
+traits:
+  errResponse: !include exchange_modules/635159a8-be44-4ed5-a886-bb461c9661c6/trait-error-response/1.0.0/trait-error-response.raml
+
+/api:
+  /v1:
+    /customers:
+      is: [errResponse]
+      get:
+        description: Retrieve all customers from Salesforce
+        responses:
+          200:
+            body:
+              application/json:
+                example: !include /Examples/getAllCustomers.json
+      post:
+        description: Create a new customer
+        body:
+          application/json:
+            example: !include Examples/customerPostRequest.json
+        responses:
+          201:
+            body:
+              application/json:
+                example: !include Examples/customerPostResponse.json
+
+      /{customerId}:
+        uriParameters:
+          customerId:
+            type: string
+            description: Unique Customer ID in Salesforce
+        get:
+          description: Retrieve customer details from Salesforce
+          responses:
+            200:
+              body:
+                application/json:
+                  example: !include /Examples/getCustomerDetails.json
+        put:
+          description: Update a specific customer record
+          body:
+            application/json:
+              example: !include Examples/customerPutRequest.json
+          responses:
+            200:
+              body:
+                application/json:
+                  example: !include Examples/customerPutResponse.json
+
+        delete:
+          description: Delete a specific customer record
+          responses:
+            200:
+              body:
+                application/json:
+                  example: !include Examples/customerDeleteResponse.json
+        
+        /orders:
+          get: 
+            description: Retrieve orders of a sepecific customer from Salesforce
+            responses:
+              200:
+                body:
+                  application/json:
+                    example: !include /Examples/getAllOrders.json
